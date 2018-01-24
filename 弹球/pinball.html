@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./css/reset.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <title>PinBall</title>
+</head>
+<body>
+  <div class="bgbox">
+    <div class="board"></div>
+  </div>
+</body>
+<script>
+  $(".bgbox").mouseenter(function () {
+  }).mousemove(function (event) {
+    if ((event.pageX -  $(".bgbox").offset().left) < $(".board").width()) {
+      $(".board").css({left: 0})
+    } else if (($(".bgbox").offset().left + $(".bgbox").width() - $(".board").width()) < event.pageX) {
+      $(".board").css({left: $(".bgbox").width() - $(".board").width()})
+    } else {
+      $(".board").css({left:event.pageX - $(".bgbox").offset().left - $(".board").width()/2 + 'px'})
+    }
+  }).mouseleave(function (event) {
+    
+  })
+</script>
+<style>
+  body {
+    display: flex;
+  }
+
+  .bgbox {
+    /*flex水平垂直居中*/
+    margin:auto;
+    width: 800px;
+    height: 400px;
+    background: #ccc;
+    position: relative;
+  }
+
+  .board {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 150px;
+    height: 10px;
+    background: pink;
+  }
+</style>
+</html>
