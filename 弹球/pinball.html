@@ -8,23 +8,10 @@
 </head>
 <body>
   <div class="bgbox">
+    <div class="ball"></div>
     <div class="board"></div>
   </div>
 </body>
-<script>
-  $(".bgbox").mouseenter(function () {
-  }).mousemove(function (event) {
-    if ((event.pageX -  $(".bgbox").offset().left) < $(".board").width()) {
-      $(".board").css({left: 0})
-    } else if (($(".bgbox").offset().left + $(".bgbox").width() - $(".board").width()) < event.pageX) {
-      $(".board").css({left: $(".bgbox").width() - $(".board").width()})
-    } else {
-      $(".board").css({left:event.pageX - $(".bgbox").offset().left - $(".board").width()/2 + 'px'})
-    }
-  }).mouseleave(function (event) {
-    
-  })
-</script>
 <style>
   body {
     display: flex;
@@ -34,7 +21,7 @@
     /*flex水平垂直居中*/
     margin:auto;
     width: 800px;
-    height: 400px;
+    height: 30%;
     background: #ccc;
     position: relative;
   }
@@ -47,5 +34,59 @@
     height: 10px;
     background: pink;
   }
+
+  .ball {
+    position: absolute;
+    left: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    background: blueviolet;
+  }
 </style>
+<script>
+  var body = $("body");
+  var ball = $(".ball");
+  var bgbox = $(".bgbox");
+  var board = $(".board");
+  var bgBoxWidth = bgbox.width();
+  var bgBoxHeight = bgbox.height();
+  var bgBoxOffsetTop = bgbox.offset().top;
+  var bgBoxOffsetLeft = bgbox.offset().left;
+  var ballWidth = ball.width();
+  var ballHeight = ball.height();
+  var boardWdith = board.width();
+  var boardHeight = board.height();
+
+  ball.css({left: Math.ceil(Math.random()*(bgBoxWidth-ballWidth)) + 'px'})
+  body.mouseenter(function () {
+  }).mousemove(function (event) {
+    if ((event.pageX -  bgBoxOffsetLeft) < boardWdith) {
+      board.css({left: 0})
+    } else if ((bgBoxOffsetLeft + bgBoxWidth - boardWdith) < event.pageX) {
+      board.css({left: bgBoxWidth - boardWdith + 'px'})
+    } else {
+      board.css({left: event.pageX - bgBoxOffsetLeft - boardWdith/2 + 'px'})
+    }
+  }).mouseleave(function (event) {
+    
+  })
+  ball.animate({top: bgBoxHeight-ballHeight-boardHeight+'px'},1000,'linear');
+  function run(){
+    setTimeout(function () {
+      var temp = Math.ceil(Math.random()*bgBoxWidth)
+      console.log(temp)
+      if ((ball.offset().left + ballWidth/2) >= board.offset().left && (ball.offset().left + ballWidth/2) <= (board.offset().left + boardWdith)) {
+        ball.animate({left: temp < boardWdith ?0:temp - ballWidth + 'px', top: 0},1000,'linear').resize(function() {
+          console.log($(this).top());
+        });
+      }else {
+        ball.animate({top: bgBoxHeight-ballHeight+'px'},0,'linear');
+        clearInterval()
+        return
+      }
+    },1000)
+  }
+  run()
+</script>
 </html>
